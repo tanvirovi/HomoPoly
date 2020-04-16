@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     // variables that will indicates the player
     int turn = 1;
 
-    //
+    // this is an array off all the index of all the properties
     int[] propertiesCanBuy = {1,3,6,8,9,11,13,14,16,17,19,21,22,24,25,26,27,28,29,31,32,34,35,37,38};
     List<Integer> arrayList;
 
