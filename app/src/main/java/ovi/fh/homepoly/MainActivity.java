@@ -34,6 +34,7 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
     // gridLayout that contains the game board
     androidx.gridlayout.widget.GridLayout gridLayout;
+
+    // variable that used in changing the background
     int stepCounter = 0;
 
     // variables that will indicates the player
@@ -72,14 +75,24 @@ public class MainActivity extends AppCompatActivity {
 
     // this is an array off all the index of all the properties
     int[] propertiesCanBuy = {1,3,6,8,9,11,13,14,16,17,19,21,22,24,25,26,27,28,29,31,32,34,35,37,38};
+
+    // arrayList is created to convert the above array propertiesCanBuy
     List<Integer> arrayList;
 
+    // Total amount of money playerOne have
     int totalAmount = 1500;
+
+    // this will contain the predefined amount of the properties
     int pulledPrice;
+
+    // this will check who's turn at the moment + in buyPropertiesButton()
     boolean playerOneTurn = true;
 
+    // Saves the brought properties of both player
     ArrayList<Integer> playerOneProperties = new ArrayList<>();
     ArrayList<Integer> playerTwoProperties = new ArrayList<>();
+
+    HashMap<Integer, Integer> indexPairs = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gridLayout = findViewById(R.id.monopolyGridLayout);
-//        Log.i("index of gridLayout", Integer.toString(gridLayout.));
+
+        populatingHashMap();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Properties");
         query.getInBackground("Ga5tOxH7Wm", new GetCallback<ParseObject>() {
@@ -96,28 +110,31 @@ public class MainActivity extends AppCompatActivity {
                 if (e == null && object != null){
 
                 }else {
-
                     e.printStackTrace();
-
                 }
             }
         });
 
     }
 
+    //Randomly generating two number
     public void rollDice(View view){
-
+        // Buttons to roll the dice
         diceRollButton = findViewById(R.id.diceRollButton);
         dice = (random.nextInt(6) + 1) + (random.nextInt(6) + 1);
 
+        playerOneTurn = true;
+
+        // the value of dice can change that is why assign it to a new int
         int diceInsideTurn = dice;
 
+        // This method will determine who is rolling
         multiPlayerInIt();
 
-        //goPlayerOne = findViewById(R.id.goPlayerOne);
-        //playerMovement.movePlayer(goPlayerOne,dice);
-
+        //printing the whole properties array
         Log.i("Resultant Array: " , Arrays.toString(propertiesCanBuy));
+
+        // Only to track the movement
         changeBackground(diceInsideTurn);
     }
 
@@ -139,10 +156,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //this method will change the background according to the
+    //this method will change the background according to the dice variable
     public void changeBackground(int diceInsideTurn){
 
-        Log.i("dice roll inside turn", Integer.toString(diceInsideTurn));
         int j = stepCounter + diceInsideTurn;
 
         //Log.i("dice roll", Integer.toString(dice));
@@ -165,9 +181,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeBackgroundColor(int stepCounter){
-        gridLayout.getChildAt(stepCounter).setBackgroundColor(Color.BLACK);
+        gridLayout.getChildAt(58).setBackgroundColor(Color.BLACK);
         Log.i("index", "ssd" + gridLayout.getChildAt(stepCounter).getId() );
-
     }
 
     public void dropIn(View view) {
@@ -257,7 +272,6 @@ public class MainActivity extends AppCompatActivity {
             });
             dialog.show();
 
-            //moneyLeft.setText();
         }
 
         return arrayList.stream()
@@ -275,16 +289,24 @@ public class MainActivity extends AppCompatActivity {
         int m;
         if (playerOneTurn){
             playerOneProperties.add(valueToCheck);
+
             m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+            Log.i("Player m", "is" + m);
+            int index = indexPairs.get(m);
+
+            gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
             Log.i("Player one", "is" + playerOneProperties);
 
         }else {
             playerTwoProperties.add(valueToCheck);
-            m = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
-            Log.i("Player Two", "is" + playerTwoProperties);
-            playerOneTurn = true;
-        }
 
+            m = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
+            int index = indexPairs.get(m);
+
+            gridLayout.getChildAt(index).setBackgroundResource(R.drawable.moto);
+            Log.i("Player Two", "is" + playerTwoProperties);
+            //playerOneTurn = true;
+        }
 
         Log.i("inside", "is " + m);
         parseQuery.whereEqualTo("diceRoll", m);
@@ -314,6 +336,26 @@ public class MainActivity extends AppCompatActivity {
     public void phaseFinish(View view){
         doneIndicator =  findViewById(R.id.doneIndicator);
         playerOneTurn = false;
+
         multiPlayerInIt();
+    }
+
+    public void populatingHashMap(){
+        indexPairs.put(1,45);
+        indexPairs.put(3,46);
+        indexPairs.put(5,47);
+        indexPairs.put(6,48);
+        indexPairs.put(8,49);
+        indexPairs.put(9,50);
+        indexPairs.put(11,51);
+        indexPairs.put(12,52);
+        indexPairs.put(13,53);
+        indexPairs.put(14,54);
+        indexPairs.put(15,55);
+        indexPairs.put(16,56);
+        indexPairs.put(17,57);
+        indexPairs.put(19,58);
+
+        Log.i("HashMap " ,"is " + indexPairs);
     }
 }
