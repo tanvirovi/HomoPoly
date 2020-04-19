@@ -55,7 +55,40 @@ public class MoneyDealings extends Activity {
 
                 totalAmount = totalAmount - pulledPrice;
                 money.setText(Integer.toString(totalAmount));
-                Log.i("Total", "is " + totalAmount);
+                Log.i("Total ", "- " + totalAmount);
+            }
+        });
+    }
+    public void addMoney(int tag, boolean playerTurn,String s){
+
+        if (playerTurn){
+            money = activity.findViewById(R.id.moneyLefts);
+        }else {
+            money = activity.findViewById(R.id.moneyLeftsTwo);
+        }
+
+        parseQuery = ParseQuery.getQuery("Properties");
+
+        Log.i("inside", "is " + tag);
+        parseQuery.whereEqualTo("diceRoll", tag);
+
+        parseQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null){
+                    if (objects.size() > 0){
+                        for (ParseObject object : objects){
+                            pulledPrice =  object.getInt(s);
+                            //Log.i("PulledPrice", "is " + pulledPrice);
+                        }
+                    }
+                }else {
+                    e.printStackTrace();
+                }
+
+                totalAmount = totalAmount + pulledPrice;
+                money.setText(Integer.toString(totalAmount));
+                Log.i("Total", "add " + totalAmount);
             }
         });
     }

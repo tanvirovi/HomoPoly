@@ -254,18 +254,27 @@ public class MainActivity extends AppCompatActivity {
 
             return arr;
         }
+
         arrayList = IntStream.of(arr).boxed().collect(Collectors.toList());
+
         int m;
+
         if (playerOneTurn){
             if (playerTwoProperties.contains(valueToCheck)){
+                Log.i("playerOneTurn", "if is " + playerOneTurn);
                 m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+
                 moneyDealings.deductMoney(m,playerOneTurn,"rent");
-                //moneyDealings1.deductMoney(m,false,"rent");
+                moneyDealings1.addMoney(m,false,"rent");
             }
         }else {
             if (playerOneProperties.contains(valueToCheck)){
-                m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+
+                Log.i("playerOneTurn", " else is " + playerOneTurn);
+                m = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
+
                 moneyDealings1.deductMoney(m,playerOneTurn,"rent");
+                moneyDealings.addMoney(m,true,"rent");
             }
         }
 
