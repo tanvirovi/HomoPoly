@@ -23,11 +23,11 @@ public class MoneyDealings extends Activity {
     public Activity activity;
 
     public MoneyDealings( Activity activity){
-
         this.activity = activity;
-
     }
-    public void deductMoney(int tag, boolean playerTurn){
+
+    public void deductMoney(int tag, boolean playerTurn,String s){
+
         if (playerTurn){
             money = activity.findViewById(R.id.moneyLefts);
         }else {
@@ -45,7 +45,7 @@ public class MoneyDealings extends Activity {
                 if (e == null){
                     if (objects.size() > 0){
                         for (ParseObject object : objects){
-                            pulledPrice =  object.getInt("price");
+                            pulledPrice =  object.getInt(s);
                             //Log.i("PulledPrice", "is " + pulledPrice);
                         }
                     }
@@ -58,6 +58,5 @@ public class MoneyDealings extends Activity {
                 Log.i("Total", "is " + totalAmount);
             }
         });
-
     }
 }

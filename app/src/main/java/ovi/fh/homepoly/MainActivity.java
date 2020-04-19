@@ -255,15 +255,36 @@ public class MainActivity extends AppCompatActivity {
             return arr;
         }
         arrayList = IntStream.of(arr).boxed().collect(Collectors.toList());
+        int m;
+        if (playerOneTurn){
+            if (playerTwoProperties.contains(valueToCheck)){
+                m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+                moneyDealings.deductMoney(m,playerOneTurn,"rent");
+                //moneyDealings1.deductMoney(m,false,"rent");
+            }
+        }else {
+            if (playerOneProperties.contains(valueToCheck)){
+                m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+                moneyDealings1.deductMoney(m,playerOneTurn,"rent");
+            }
+        }
 
         if (arrayList.contains(valueToCheck) == true){
 
             dialog.setContentView(R.layout.buy_popup);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             Button buyProperties = dialog.findViewById(R.id.buyProperties);
+            Button auctionProperties = dialog.findViewById(R.id.auctionProperties);
 
             int i = arrayList.indexOf(valueToCheck);
             arrayList.remove(i);
+
+            auctionProperties.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
 
             buyProperties.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -287,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
         gridLayout = findViewById(R.id.monopolyGridLayout);
         int m;
+        String s = "price";
         //money = findViewById(R.id.moneyLefts);
         if (playerOneTurn){
             playerOneProperties.add(valueToCheck);
@@ -298,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
             Log.i("Player one", "is" + playerOneProperties);
 
-            moneyDealings.deductMoney(m,playerOneTurn);
+            moneyDealings.deductMoney(m,playerOneTurn,s);
 
         }else {
             playerTwoProperties.add(valueToCheck);
@@ -309,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.moto);
             Log.i("Player Two", "is" + playerTwoProperties);
 
-            moneyDealings1.deductMoney(m,playerOneTurn);
+            moneyDealings1.deductMoney(m,playerOneTurn,s);
         }
 
     }
