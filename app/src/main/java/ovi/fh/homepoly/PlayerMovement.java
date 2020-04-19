@@ -3,6 +3,9 @@ package ovi.fh.homepoly;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
+
+import java.util.Random;
 
 public class PlayerMovement {
 
@@ -11,18 +14,25 @@ public class PlayerMovement {
     int j,k;
     int yStepCounter = 0;
     int tempStepCounter;
-
+    Random boxRandom = new Random();
 
     public void movePlayer(View goPlayerOne, int dice){
 
         stepCounter = dice;
-        Log.i("dice roll move", Integer.toString(stepCounter));
 
         tempStepCounter = yStepCounter + stepCounter;
 
+        Log.i("dice roll move", Integer.toString(tempStepCounter));
         h =new Handler();
 
         //checking the total steps that y can contain
+
+        if (tempStepCounter == 4 || tempStepCounter == 7 || tempStepCounter == 18 ||
+                tempStepCounter == 23 || tempStepCounter == 33 || tempStepCounter == 38){
+
+            int randomNumber = boxRandom.nextInt(5)+1;
+            pickChance(randomNumber);
+        }
 
         if (tempStepCounter <= 10){
 
@@ -109,5 +119,28 @@ public class PlayerMovement {
         }
 
 
+    }
+
+    private void pickChance(int randomNumber){
+        switch(randomNumber){
+            case 1:
+                Log.i("chance","go to jail " + randomNumber);
+                break;
+            case 2:
+                Log.i("chance","go to pallMall " + randomNumber);
+                break;
+            case 3:
+                Log.i("chance","go to start " + randomNumber);
+                break;
+            case 4:
+                Log.i("chance","go to parking " + randomNumber);
+                break;
+            case 5:
+                Log.i("chance","go to Mayfair " + randomNumber);
+                break;
+            default:
+                Log.i("chance","error " + randomNumber);
+
+        }
     }
 }

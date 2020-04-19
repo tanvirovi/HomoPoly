@@ -766,21 +766,20 @@
 
     </androidx.gridlayout.widget.GridLayout>
 
+
     <LinearLayout
-        android:layout_width="149dp"
+        android:layout_width="154dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="246dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="89dp"
+        android:layout_margin="30dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/monopolyGridLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageViewOne"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
@@ -789,6 +788,39 @@
 
         <TextView
             android:id="@+id/moneyLefts"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@color/blueDark"
+            android:text="1500"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="154dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/monopolyGridLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewTwo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="#F5319336"
+            app:srcCompat="@drawable/coin" />
+
+        <TextView
+            android:id="@+id/moneyLeftsTwo"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_weight="1"

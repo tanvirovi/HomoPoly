@@ -43,6 +43,7 @@ import java.util.stream.IntStream;
 
 public class MainActivity extends AppCompatActivity {
 
+
     // For randomly selecting number
     Random random = new Random();
     int dice;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     // textView that will show elements of the properties
     TextView propertyText, rentText, houseCost,oneHouseRent,
-            twoHouseRent, threeHouseRent, fourHouseRent, hotelRent, money;
+            twoHouseRent, threeHouseRent, fourHouseRent, hotelRent, money,money1;
 
     // The button that will enable player to make a move (diceRollButton)
     // doneIndicator will help player to select when is move is done
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> playerTwoProperties = new ArrayList<>();
 
     HashMap<Integer, Integer> indexPairs = new HashMap<>();
+
+    MoneyDealings moneyDealings = new MoneyDealings(this);
+    MoneyDealings moneyDealings1 = new MoneyDealings(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
     public void changeBackground(int diceInsideTurn){
 
         int j = stepCounter + diceInsideTurn;
-
+        
         //Log.i("dice roll", Integer.toString(dice));
         if (stepCounter <= 38 && j < 39) {
             stepCounter += diceInsideTurn;
@@ -281,12 +285,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void buyPropertiesButton(int valueToCheck){
 
-        ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Properties");
-        //ImageView imageView = (R.id.oldKentIndicator);
-        money = findViewById(R.id.moneyLefts);
-
         gridLayout = findViewById(R.id.monopolyGridLayout);
         int m;
+        //money = findViewById(R.id.moneyLefts);
         if (playerOneTurn){
             playerOneProperties.add(valueToCheck);
 
@@ -297,6 +298,8 @@ public class MainActivity extends AppCompatActivity {
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
             Log.i("Player one", "is" + playerOneProperties);
 
+            moneyDealings.deductMoney(m,playerOneTurn);
+
         }else {
             playerTwoProperties.add(valueToCheck);
 
@@ -305,31 +308,9 @@ public class MainActivity extends AppCompatActivity {
 
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.moto);
             Log.i("Player Two", "is" + playerTwoProperties);
-            //playerOneTurn = true;
+
+            moneyDealings1.deductMoney(m,playerOneTurn);
         }
-
-        Log.i("inside", "is " + m);
-        parseQuery.whereEqualTo("diceRoll", m);
-
-        parseQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null){
-                    if (objects.size() > 0){
-                        for (ParseObject object : objects){
-                            pulledPrice =  object.getInt("price");
-                            Log.i("PulledPrice", "is " + pulledPrice);
-                        }
-                    }
-                }else {
-                    e.printStackTrace();
-                }
-
-                totalAmount = totalAmount - pulledPrice;
-                //imageView.setVisibility(View.VISIBLE);
-                money.setText(Integer.toString(totalAmount));
-            }
-        });
 
     }
 
