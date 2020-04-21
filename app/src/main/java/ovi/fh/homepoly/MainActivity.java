@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
         Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
+
         if (arr == null || valueToCheck < 0 || valueToCheck >= 39) {
 
             return arr;
