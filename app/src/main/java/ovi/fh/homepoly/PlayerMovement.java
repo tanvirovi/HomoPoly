@@ -41,7 +41,7 @@ public class PlayerMovement {
         //dice = 7;
 
         arrayList = IntStream.of(stepArray).boxed().collect(Collectors.toList());
-        int[] i = {10,9,12,12,8,12};
+        int[] i = {10,10,11,8,12,12};
         stepCounter = i[o];
 
         o = o + 1;
@@ -56,8 +56,6 @@ public class PlayerMovement {
         //checking the total steps that y can contain if the yStepCounter is 9 19 29 39 and dice roll is 12
         if (arrayList.contains(yStepCounter) && stepCounter == 12){
 
-            // implement rest of the code !!!!!!!!!!!!
-
             // one element is 9
             if (yStepCounter == 9) {
                 goPlayerOne.animate().translationYBy(135).setDuration(1000).start();
@@ -70,7 +68,7 @@ public class PlayerMovement {
 
                 h.postDelayed(new Runnable() {
                     public void run() {
-                        goPlayerOne.animate().translationXBy(-135).setDuration(1000).start();
+                        goPlayerOne.animate().translationYBy(-135).setDuration(1000).start();
                     }
                 }, 2500);
             }
@@ -95,13 +93,58 @@ public class PlayerMovement {
                     }
                 }, 2500);
             }
+
+            else if (yStepCounter == 29) {
+
+                moveRightY(1,goPlayerOne);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+
+                        moveUpX(10,goPlayerOne);
+
+                    }
+                }, 1500);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+
+                        moveLeftY(1,goPlayerOne);
+
+                    }
+                }, 2500);
+            }
+
+            else {
+
+                moveUpX(1,goPlayerOne);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+
+                        moveLeftY(10,goPlayerOne);
+
+                    }
+                }, 1500);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+
+                        moveDownX(1,goPlayerOne);
+
+                    }
+                }, 2500);
+            }
+
             yStepCounter += stepCounter;
 
         }
 
         else {
 
-            if (tempStepCounter == 4 || tempStepCounter == 7 || tempStepCounter == 18 || tempStepCounter == 47 || tempStepCounter == 44) {
+            if (tempStepCounter == 4 || tempStepCounter == 7 || tempStepCounter == 18
+                    || tempStepCounter == 47 || tempStepCounter == 44 || tempStepCounter == 23
+                    || tempStepCounter == 33 || tempStepCounter == 38) {
 
                 if (tempStepCounter <= 10) {
 
@@ -131,6 +174,35 @@ public class PlayerMovement {
                         goPlayerOne.animate().translationXBy(-120 * j).setDuration(1000).start();
                         stepCounter = stepCounter - j;
                     }
+                }
+
+                else if (tempStepCounter <= 30){
+
+                    if (yStepCounter <= 20) {
+                        j = 20 - yStepCounter;
+                        goPlayerOne.animate().translationXBy(120 * j).setDuration(1000).start();
+                        stepCounter = stepCounter - j;
+                    }
+
+                    h.postDelayed(new Runnable() {
+                        public void run() {
+                            goPlayerOne.animate().translationYBy(-135 * stepCounter).setDuration(1000).start();
+                        }
+                    }, 1500);
+                }
+
+                else if (tempStepCounter <= 40){
+                    if (yStepCounter <= 30) {
+                        j = 30 - yStepCounter;
+                        goPlayerOne.animate().translationYBy(-135 * j).setDuration(1000).start();
+                        stepCounter = stepCounter - j;
+                    }
+
+                    h.postDelayed(new Runnable() {
+                        public void run() {
+                            goPlayerOne.animate().translationXBy(-120 * stepCounter).setDuration(1000).start();
+                        }
+                    }, 1500);
                 }
 
                 int randomNumber = boxRandom.nextInt(5) + 1;
@@ -180,7 +252,7 @@ public class PlayerMovement {
 
                 }
 
-                // moving into 21 to 30 player movement (29 and 30 is not included)
+                // moving into 21 to 30 player movement (19 and 30 is not included)
                 else if (tempStepCounter > 20 && tempStepCounter <= 30) {
 
                     k = stepCounter;
@@ -190,7 +262,6 @@ public class PlayerMovement {
                         goPlayerOne.animate().translationXBy(120 * j).setDuration(1000).start();
                         stepCounter = stepCounter - j;
                     }
-
 
                     h.postDelayed(new Runnable() {
                         public void run() {
@@ -273,7 +344,9 @@ public class PlayerMovement {
 
     public void goTOJail(View goPlayerOne) {
 
-        if (tempStepCounter == 4 || tempStepCounter == 7 || tempStepCounter == 18 || tempStepCounter == 47 || tempStepCounter == 44) {
+        if (tempStepCounter == 4 || tempStepCounter == 7 || tempStepCounter == 18
+                || tempStepCounter == 47 || tempStepCounter == 44 || tempStepCounter == 23
+                || tempStepCounter == 33 || tempStepCounter == 38) {
 
             if (tempStepCounter == 44 || tempStepCounter == 4) {
 
@@ -315,7 +388,9 @@ public class PlayerMovement {
                     }
                 }, 1500);
 
-            }else if (tempStepCounter == 18){
+            }
+
+            else if (tempStepCounter == 18){
 
                 h.postDelayed(new Runnable() {
                     public void run() {
@@ -323,14 +398,58 @@ public class PlayerMovement {
                     }
                 }, 2500);
             }
+
+            else if (tempStepCounter == 23){
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                moveLeftY(3,goPlayerOne);
+                    }
+                }, 2500);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        moveUpX(10,goPlayerOne);
+                    }
+                }, 3500);
+            }
+
+            else if (tempStepCounter == 33){
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        moveUpX(7,goPlayerOne);
+                    }
+                }, 2500);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        moveLeftY(10,goPlayerOne);
+                    }
+                }, 3500);
+            }
+
+            else if (tempStepCounter == 38){
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        moveUpX(2,goPlayerOne);
+                    }
+                }, 2500);
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        moveLeftY(10,goPlayerOne);
+                    }
+                }, 3500);
+            }
+
             yStepCounter = 10;
 
             // if the player has been sent to "goto Jail"
-        } else if (tempStepCounter == 30) {
+        }
+
+        else if (tempStepCounter == 30) {
 
             if (tempStepCounter > 20 && tempStepCounter <= 30) {
-
-                k = stepCounter;
 
                 if (yStepCounter <= 20) {
                     j = 20 - yStepCounter;
@@ -360,5 +479,7 @@ public class PlayerMovement {
 
             }
         }
+
+
     }
 }
