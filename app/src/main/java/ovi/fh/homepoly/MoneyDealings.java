@@ -92,4 +92,18 @@ public class MoneyDealings extends Activity {
             }
         });
     }
+
+    public void simpleAddMoney(int add, boolean b){
+        if (b){
+            totalAmount = totalAmount + add;
+            money = activity.findViewById(R.id.moneyLefts);
+            money.setText(Integer.toString(totalAmount));
+        }else {
+            totalAmount = totalAmount + add;
+            money = activity.findViewById(R.id.moneyLeftsTwo);
+            money.setText(Integer.toString(totalAmount));
+        }
+
+
+    }
 }

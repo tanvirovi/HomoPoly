@@ -75,16 +75,11 @@ public class MainActivity extends AppCompatActivity {
     int turn = 1;
 
     // this is an array off all the index of all the properties
-    int[] propertiesCanBuy = {1,3,6,8,9,11,13,14,16,17,19,21,22,24,25,26,27,28,29,31,32,34,35,37,38};
+    int[] propertiesCanBuy = {1,3,6,8,9,11,13,14,16,17,19,21,22,24,25,26,27,28,29,31,32,34,35,37,39};
 
     // arrayList is created to convert the above array propertiesCanBuy
     List<Integer> arrayList;
 
-    // Total amount of money playerOne have
-    int totalAmount = 1500;
-
-    // this will contain the predefined amount of the properties
-    int pulledPrice;
 
     // this will check who's turn at the moment + in buyPropertiesButton()
     boolean playerOneTurn = true;
@@ -146,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         if(turn == 1){
             diceRollButton.setVisibility(View.INVISIBLE);
             goPlayerOne = findViewById(R.id.goPlayerOne);
-            playerMovement.movePlayer(goPlayerOne,dice);
+            playerMovement.movePlayer(goPlayerOne,dice,moneyDealings,playerOneTurn);
             propertiesCanBuy = buyProperties(propertiesCanBuy,playerMovement.yStepCounter);
             turn = 0;
         }else{
@@ -154,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             dice = (random.nextInt(6) + 1) + (random.nextInt(6) + 1);
             goPlayerOne = findViewById(R.id.goPlayerTwo);
             //movePlayer(goPlayerOne);
-            playerMovementTwo.movePlayer(goPlayerOne,dice);
+            playerMovementTwo.movePlayer(goPlayerOne,dice,moneyDealings1,playerOneTurn);
             propertiesCanBuy = buyProperties(propertiesCanBuy,playerMovementTwo.yStepCounter);
             turn = 1;
         }
@@ -185,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeBackgroundColor(int stepCounter){
-        gridLayout.getChildAt(58).setBackgroundColor(Color.BLACK);
+        gridLayout.getChildAt(56).setBackgroundColor(Color.BLACK);
         Log.i("index", "ssd" + gridLayout.getChildAt(stepCounter).getId() );
     }
 
