@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
     int dice;
 
     // Setting up the playerMovement class for player movement
-    PlayerMovement playerMovement = new PlayerMovement();
-    PlayerMovement playerMovementTwo = new PlayerMovement();
+    PlayerMovement playerMovement = new PlayerMovement(this);
+    PlayerMovement playerMovementTwo = new PlayerMovement(this);
 
     // creating view for every properties available in the board
     ImageView propertyClicked;
@@ -257,11 +257,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (playerOneTurn){
             if (playerTwoProperties.contains(valueToCheck)){
+
                 Log.i("playerOneTurn", "if is " + playerOneTurn);
                 m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
 
-                moneyDealings.deductMoney(m,playerOneTurn,"rent");
-                moneyDealings1.addMoney(m,false,"rent");
+                moneyDealings.deductMoney(m,playerOneTurn,"rent",playerTwoProperties);
+                moneyDealings1.addMoney(m,false,"rent",playerTwoProperties);
             }
         }else {
             if (playerOneProperties.contains(valueToCheck)){
@@ -269,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("playerOneTurn", " else is " + playerOneTurn);
                 m = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
 
-                moneyDealings1.deductMoney(m,playerOneTurn,"rent");
-                moneyDealings.addMoney(m,true,"rent");
+                moneyDealings1.deductMoney(m,playerOneTurn,"rent",playerOneProperties);
+                moneyDealings.addMoney(m,true,"rent",playerOneProperties);
             }
         }
 

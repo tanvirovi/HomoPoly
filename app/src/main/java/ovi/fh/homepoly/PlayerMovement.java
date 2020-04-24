@@ -1,16 +1,19 @@
 package ovi.fh.homepoly;
 
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class PlayerMovement {
+public class PlayerMovement extends Activity{
 
     Handler h;
     int stepCounter;
@@ -22,6 +25,14 @@ public class PlayerMovement {
     int o = 0;
     int[] stepArray = {9,19,29,39};
     List<Integer> arrayList;
+
+    TextView simpleTextView;
+
+    public Activity activity;
+
+    public PlayerMovement( Activity activity){
+        this.activity = activity;
+    }
 
     public void moveLeftY(int moveBy, View view){
         view.animate().translationYBy(135 * moveBy).setDuration(1000).start();
@@ -41,7 +52,7 @@ public class PlayerMovement {
         //dice = 7;
 
         arrayList = IntStream.of(stepArray).boxed().collect(Collectors.toList());
-        int[] i = {10,10,11,9,11,1,1,12,12,10,12};
+        int[] i = {1,2,7,10,11,10,2,3,2,1,12,10,10,5};
 
         stepCounter = i[o];
 
@@ -354,13 +365,43 @@ public class PlayerMovement {
     }
 
     private void pickChance(int randomNumber,View view, MoneyDealings o, boolean b){
+
+        Dialog dialog = new Dialog(activity);
+
         switch(randomNumber){
             case 1:
+
+                dialog.setContentView(R.layout.chest_chance);
+                simpleTextView = dialog.findViewById(R.id.simpleText);
+                simpleTextView.setText("Go to Jail");
+                dialog.show();
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                       dialog.dismiss();
+                    }
+                }, 1000);
+
                 Log.i("chance","go to jail " + randomNumber);
+
                 goTOJail(view);
+
                 break;
             case 2:
+
                 Log.i("chance","your building loan matures get 150 " + randomNumber);
+
+                dialog.setContentView(R.layout.chest_chance);
+                simpleTextView = dialog.findViewById(R.id.simpleText);
+                simpleTextView.setText("your building loan" +"\n"+ "matures get 150 ");
+                dialog.show();
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        dialog.dismiss();
+                    }
+                }, 1500);
+
                 chanceBonusFines(o,b, 150);
                 break;
             case 3:
