@@ -54,9 +54,9 @@ public class PlayerMovement extends Activity{
         arrayList = IntStream.of(stepArray).boxed().collect(Collectors.toList());
         int[] i = {1,2,7,10,11,10,2,3,2,1,12,10,10,5};
 
-        stepCounter = i[o];
+        //stepCounter = i[o];
 
-        //stepCounter =dice;
+        stepCounter =dice;
 
         o = o + 1;
 

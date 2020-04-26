@@ -23,6 +23,7 @@ public class MoneyDealings extends Activity {
     ParseQuery<ParseObject> parseQuery;
 
     TextView money;
+
     public Activity activity;
 
     public MoneyDealings( Activity activity){

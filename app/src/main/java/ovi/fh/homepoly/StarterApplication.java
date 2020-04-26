@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseUser;
 
 
 public class StarterApplication  extends Application {
@@ -21,6 +22,8 @@ public class StarterApplication  extends Application {
                 .server("http://3.21.232.234:80/parse")
                 .build()
         );
+
+        //ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);
