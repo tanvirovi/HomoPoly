@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -52,7 +53,7 @@ public class PlayerMovement extends Activity{
         //dice = 7;
 
         arrayList = IntStream.of(stepArray).boxed().collect(Collectors.toList());
-        int[] i = {1,2,7,10,11,10,2,3,2,1,12,10,10,5};
+        int[] i = {10,12,11,9,12,12,2,3,2,1,12,10,10,5};
 
         //stepCounter = i[o];
 
@@ -69,6 +70,10 @@ public class PlayerMovement extends Activity{
 
         //checking the total steps that y can contain if the yStepCounter is 9 19 29 39 and dice roll is 12
         if (arrayList.contains(yStepCounter) && stepCounter == 12){
+
+            if (tempStepCounter >= 40) {
+                chanceBonusFines(object, b, 200);
+            }
 
             // one element is 9
             if (yStepCounter == 9) {
@@ -160,9 +165,9 @@ public class PlayerMovement extends Activity{
                     || tempStepCounter == 47 || tempStepCounter == 44 || tempStepCounter == 23
                     || tempStepCounter == 33 || tempStepCounter == 38) {
 
-                //int randomNumber = boxRandom.nextInt(5) + 1;
+                int randomNumber = boxRandom.nextInt(5) + 1;
 
-                int randomNumber = 2;
+                //int randomNumber = 2;
 
                 pickChance(randomNumber, goPlayerOne, object, b);
 
@@ -308,6 +313,10 @@ public class PlayerMovement extends Activity{
 
             k = stepCounter;
 
+            if (tempStepCounter == 40) {
+                chanceBonusFines(moneyDealings, b, 200);
+            }
+
             if (yStepCounter <= 30) {
                 j = 30 - yStepCounter;
                 goPlayerOne.animate().translationYBy(-135 * j).setDuration(1000).start();
@@ -326,8 +335,10 @@ public class PlayerMovement extends Activity{
         }
 
         // resetting the previous parameters so the cycle can start again
-        else if (tempStepCounter > 40 && tempStepCounter <= 51){
+        else if (tempStepCounter > 40 && tempStepCounter <= 52){
 
+
+            Log.i("check", " tempStepCounter" + tempStepCounter);
             k = stepCounter;
             if (tempStepCounter == 51){
 
@@ -343,7 +354,23 @@ public class PlayerMovement extends Activity{
                     }
                 }, 1500);
 
-            }else {
+            }
+            else if (tempStepCounter == 52){
+
+                goPlayerOne.animate().translationYBy(135 * 10).setDuration(1000).start();
+
+                if (tempStepCounter >= 40) {
+                    chanceBonusFines(moneyDealings, b, 200);
+                }
+
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        goPlayerOne.animate().translationXBy(120 * 2).setDuration(1000).start();
+                    }
+                }, 1500);
+
+            }
+            else {
                 if (yStepCounter <= 40) {
                     j = 40 - yStepCounter;
                     goPlayerOne.animate().translationXBy(-120 * j).setDuration(1000).start();

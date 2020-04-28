@@ -81,25 +81,38 @@ public class MoneyDealings extends Activity {
         Log.i("inside", "is " + tag);
         parseQuery.whereEqualTo("diceRoll", tag);
 
-        parseQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null){
-                    if (objects.size() > 0){
-                        for (ParseObject object : objects){
-                            pulledPrice =  object.getInt(s);
-                            //Log.i("PulledPrice", "is " + pulledPrice);
-                        }
-                    }
-                }else {
-                    e.printStackTrace();
-                }
+        if (tag == 2){
+            totalAmount = totalAmount - 200;
+            money.setText(Integer.toString(totalAmount));
+            Log.i("Totalll ", "- " + tag);
+        }
 
-                totalAmount = totalAmount - pulledPrice;
-                money.setText(Integer.toString(totalAmount));
-                Log.i("Total ", "- " + totalAmount);
-            }
-        });
+        else if (tag == 36){
+            totalAmount = totalAmount - 100;
+            money.setText(Integer.toString(totalAmount));
+            Log.i("Total ", "- " + totalAmount);
+        }
+        else {
+            parseQuery.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        if (objects.size() > 0) {
+                            for (ParseObject object : objects) {
+                                pulledPrice = object.getInt(s);
+                                //Log.i("PulledPrice", "is " + pulledPrice);
+                            }
+                        }
+                    } else {
+                        e.printStackTrace();
+                    }
+
+                    totalAmount = totalAmount - pulledPrice;
+                    money.setText(Integer.toString(totalAmount));
+                    Log.i("Total ", "- " + totalAmount);
+                }
+            });
+        }
     }
 
     public void addMoney(int tag, boolean playerTurn,String s, ArrayList<Integer> integerArrayList){

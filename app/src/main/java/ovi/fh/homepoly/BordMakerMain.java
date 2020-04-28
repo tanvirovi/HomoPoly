@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -156,7 +157,7 @@ public class BordMakerMain extends AppCompatActivity {
 
     // changing the background of gridLayout by index
     public void changeBackgroundColor(int stepCounter){
-        gridLayout.getChildAt(56).setBackgroundColor(Color.BLACK);
+        gridLayout.getChildAt(44).setBackgroundColor(Color.BLACK);
         Log.i("index", "ssd" + gridLayout.getChildAt(stepCounter).getId() );
     }
 
@@ -225,16 +226,29 @@ public class BordMakerMain extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
 
-        if (arr == null || valueToCheck < 0 || valueToCheck >= 39) {
+        if (arr == null || valueToCheck < 0 || valueToCheck >= 40) {
 
             return arr;
         }
 
         arrayList = IntStream.of(arr).boxed().collect(Collectors.toList());
 
-        int m;
+        int m,taxIndex;
 
         if (playerOneTurn){
+
+            taxIndex = playerMovement.yStepCounter;
+
+            if (taxIndex == 2){
+                moneyDealings.deductMoney(taxIndex,playerOneTurn,"rent");
+                Log.i("taxIndex ", "- " + taxIndex);
+            }
+
+            else if (taxIndex == 36){
+                moneyDealings.deductMoney(taxIndex,playerOneTurn,"rent");
+                Log.i("taxIndex ", "- " + taxIndex);
+            }
+
             if (playerTwoProperties.contains(valueToCheck)){
 
                 Log.i("playerOneTurn", "if is " + playerOneTurn);
@@ -243,7 +257,22 @@ public class BordMakerMain extends AppCompatActivity {
                 moneyDealings.deductMoney(m,playerOneTurn,"rent",playerTwoProperties);
                 moneyDealings1.addMoney(m,false,"rent",playerTwoProperties);
             }
-        }else {
+        }
+
+        else {
+
+            taxIndex = playerMovementTwo.yStepCounter;
+
+            if (taxIndex == 2){
+                moneyDealings1.deductMoney(taxIndex,playerOneTurn,"rent");
+                Log.i("taxIndex ", "- " + taxIndex);
+            }
+
+            else if (taxIndex == 36){
+                moneyDealings1.deductMoney(taxIndex,playerOneTurn,"rent");
+                Log.i("taxIndex ", "- " + taxIndex);
+            }
+
             if (playerOneProperties.contains(valueToCheck)){
 
                 Log.i("playerOneTurn", " else is " + playerOneTurn);
@@ -254,15 +283,15 @@ public class BordMakerMain extends AppCompatActivity {
             }
         }
 
-        if (arrayList.contains(valueToCheck) == true){
+        if (arrayList.contains(valueToCheck)){
 
             dialog.setContentView(R.layout.buy_popup);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             Button buyProperties = dialog.findViewById(R.id.buyProperties);
+
             Button auctionProperties = dialog.findViewById(R.id.auctionProperties);
 
-            int i = arrayList.indexOf(valueToCheck);
-            arrayList.remove(i);
+            arrayList.remove((Integer) valueToCheck);
 
             auctionProperties.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -301,6 +330,7 @@ public class BordMakerMain extends AppCompatActivity {
 
             m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
             Log.i("Player m", "is" + m);
+
             int index = indexPairs.get(m);
 
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
@@ -332,20 +362,20 @@ public class BordMakerMain extends AppCompatActivity {
 
     // putting information into HashMap for the property indicator
     public void populatingHashMap(){
-        indexPairs.put(1,45);
-        indexPairs.put(3,46);
-        indexPairs.put(5,47);
-        indexPairs.put(6,48);
-        indexPairs.put(8,49);
-        indexPairs.put(9,50);
-        indexPairs.put(11,51);
-        indexPairs.put(12,52);
-        indexPairs.put(13,53);
-        indexPairs.put(14,54);
-        indexPairs.put(15,55);
-        indexPairs.put(16,56);
-        indexPairs.put(17,57);
-        indexPairs.put(19,58);
+        indexPairs.put(1,44);
+        indexPairs.put(3,45);
+        indexPairs.put(5,46);
+        indexPairs.put(6,47);
+        indexPairs.put(8,48);
+        indexPairs.put(9,49);
+        indexPairs.put(11,50);
+        indexPairs.put(12,51);
+        indexPairs.put(13,52);
+        indexPairs.put(14,53);
+        indexPairs.put(15,54);
+        indexPairs.put(16,55);
+        indexPairs.put(17,56);
+        indexPairs.put(19,57);
 
         Log.i("HashMap " ,"is " + indexPairs);
     }

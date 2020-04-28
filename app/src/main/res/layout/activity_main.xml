@@ -600,24 +600,7 @@
             app:layout_gravity="center"
             app:layout_row="2" />
 
-        <LinearLayout
-            android:id="@+id/linearLayoutTop"
-            android:layout_width="31dp"
-            android:layout_height="10dp"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            app:layout_column="1"
-            app:layout_row="1">
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:alpha="0"
-                app:srcCompat="@drawable/car" />
-
-        </LinearLayout>
 
         <ImageView
             android:id="@+id/goPlayerOne"
@@ -761,6 +744,124 @@
             app:layout_column="9"
             app:layout_row="9"
             android:layout_marginTop="25dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/strandIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="9"
+            android:layout_marginLeft="22dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+        android:id="@+id/fleetStreetIndicator"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        app:layout_column="9"
+        app:layout_row="8"
+        android:layout_marginLeft="22dp"
+        app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/trafalgarSquareIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="6"
+            android:layout_marginLeft="22dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/maryLandIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="5"
+            android:layout_marginLeft="22dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/leicesterSquareIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="4"
+            android:layout_marginLeft="22dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/coventryStreetIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="3"
+            android:layout_marginLeft="22dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/piccadillyIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="1"
+            android:layout_marginLeft="22dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/oxfordStreetIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="9"
+            app:layout_row="1"
+            android:layout_marginBottom="25dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/regentStreetIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="8"
+            app:layout_row="1"
+            android:layout_marginBottom="25dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/bondStreetIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="6"
+            app:layout_row="1"
+            android:layout_marginBottom="25dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/liverpoolStreetStationIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="5"
+            app:layout_row="1"
+            android:layout_marginBottom="25dp"
+            app:layout_gravity="center" />
+
+
+        <ImageView
+            android:id="@+id/parkLaneIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="3"
+            app:layout_row="1"
+            android:layout_marginBottom="25dp"
+            app:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/mayFairIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_column="1"
+            app:layout_row="1"
+            android:layout_marginBottom="25dp"
             app:layout_gravity="center" />
 
 
