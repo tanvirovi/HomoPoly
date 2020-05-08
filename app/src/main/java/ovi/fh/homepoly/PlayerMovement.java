@@ -53,7 +53,7 @@ public class PlayerMovement extends Activity{
         //dice = 7;
 
         arrayList = IntStream.of(stepArray).boxed().collect(Collectors.toList());
-        int[] i = {10,12,11,9,12,12,2,3,2,1,12,10,10,5};
+        int[] i = {7,5,7,8,12,12,2,3,2,1,12,10,10,5};
 
         //stepCounter = i[o];
 
@@ -165,7 +165,7 @@ public class PlayerMovement extends Activity{
                     || tempStepCounter == 47 || tempStepCounter == 44 || tempStepCounter == 23
                     || tempStepCounter == 33 || tempStepCounter == 38) {
 
-                int randomNumber = boxRandom.nextInt(5) + 1;
+                int randomNumber = boxRandom.nextInt(1) + 1;
 
                 //int randomNumber = 2;
 
@@ -233,6 +233,7 @@ public class PlayerMovement extends Activity{
                             }
                         }, 1500);
                     }
+                    yStepCounter = 10;
                 }
 
                 else if (randomNumber == 2){

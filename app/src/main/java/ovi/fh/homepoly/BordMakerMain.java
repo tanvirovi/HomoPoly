@@ -1,6 +1,7 @@
 package ovi.fh.homepoly;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -80,6 +83,10 @@ public class BordMakerMain extends AppCompatActivity {
 
     MoneyDealings moneyDealings = new MoneyDealings(this);
     MoneyDealings moneyDealings1 = new MoneyDealings(this);
+
+    BidNumber bidNumber;
+
+    ArrayList<BidNumber> stringArrayList;
 
 
     @Override
@@ -224,7 +231,10 @@ public class BordMakerMain extends AppCompatActivity {
     public int[] buyProperties(int[] arr, int valueToCheck){
 
         Dialog dialog = new Dialog(this);
+        Dialog dialog1 = new Dialog(this);
+
         dialog.setCanceledOnTouchOutside(false);
+        dialog1.setCanceledOnTouchOutside(false);
 
         if (arr == null || valueToCheck < 0 || valueToCheck >= 40) {
 
@@ -286,8 +296,11 @@ public class BordMakerMain extends AppCompatActivity {
         if (arrayList.contains(valueToCheck)){
 
             dialog.setContentView(R.layout.buy_popup);
+
             Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             Button buyProperties = dialog.findViewById(R.id.buyProperties);
+
+            dialog1.setContentView(R.layout.auction_popup);
 
             Button auctionProperties = dialog.findViewById(R.id.auctionProperties);
 
@@ -297,6 +310,38 @@ public class BordMakerMain extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
+
+                    dialog1.show();
+                }
+            });
+
+            Button bidButton = dialog1.findViewById(R.id.bidButton);
+            TextView manualText = dialog1.findViewById(R.id.manualNumber);
+
+            ListView listView =  dialog1.findViewById(R.id.showBidList);
+            stringArrayList = new ArrayList<>();
+
+
+            bidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //dialog1.dismiss();
+
+                    if (playerOneTurn){
+
+                        String s = String.valueOf(manualText.getText());
+
+                        bidNumber = new BidNumber(s);
+
+                        stringArrayList.add(bidNumber);
+
+                        BidListAdapter arrayAdapter = new BidListAdapter(BordMakerMain.this,R.layout.newlist, stringArrayList);
+
+                        listView.setAdapter(arrayAdapter);
+
+                    }else {
+                        moneyDealings1.auctionProperties(false);
+                    }
                 }
             });
 
@@ -309,6 +354,9 @@ public class BordMakerMain extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
+
+
+
             dialog.show();
 
         }
@@ -322,8 +370,10 @@ public class BordMakerMain extends AppCompatActivity {
     public void buyPropertiesButton(int valueToCheck){
 
         gridLayout = findViewById(R.id.monopolyGridLayout);
+
         int m;
         String s = "price";
+
         //money = findViewById(R.id.moneyLefts);
         if (playerOneTurn){
             playerOneProperties.add(valueToCheck);

@@ -239,4 +239,8 @@ public class MoneyDealings extends Activity {
         }
     }
 
+    public void auctionProperties(boolean b){
+
+    }
+
 }
