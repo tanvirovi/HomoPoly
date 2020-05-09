@@ -68,6 +68,24 @@ public class MoneyDealings extends Activity {
         });
     }
 
+    public void deductMoney(int tag, boolean playerTurn, int bidAmount){
+
+        if (playerTurn){
+            money = activity.findViewById(R.id.moneyLefts);
+        }else {
+            money = activity.findViewById(R.id.moneyLeftsTwo);
+        }
+
+        parseQuery = ParseQuery.getQuery("Properties");
+
+        Log.i("inside", "is " + tag);
+
+        totalAmount = totalAmount - bidAmount;
+        money.setText(Integer.toString(totalAmount));
+        Log.i("Total ", "- " + totalAmount);
+
+    }
+
     public void deductMoney(int tag, boolean playerTurn, String s){
 
         if (playerTurn){
@@ -239,8 +257,24 @@ public class MoneyDealings extends Activity {
         }
     }
 
-    public void auctionProperties(boolean b){
-
+    public void auctionProperties(boolean b, int tag){
+        parseQuery = ParseQuery.getQuery("Properties");
+        parseQuery.whereEqualTo("diceRoll", tag);
+        parseQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+                        for (ParseObject object : objects) {
+                            pulledPrice = object.getInt("price");
+                            //Log.i("PulledPrice", "is " + pulledPrice);
+                        }
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

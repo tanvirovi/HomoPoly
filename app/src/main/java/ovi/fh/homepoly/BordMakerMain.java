@@ -1,20 +1,20 @@
 package ovi.fh.homepoly;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,6 +86,9 @@ public class BordMakerMain extends AppCompatActivity {
 
     BidNumber bidNumber;
 
+    int tagIndex;
+    int bid,bid1;
+    Handler h;
     ArrayList<BidNumber> stringArrayList;
 
 
@@ -236,6 +239,7 @@ public class BordMakerMain extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog1.setCanceledOnTouchOutside(false);
 
+
         if (arr == null || valueToCheck < 0 || valueToCheck >= 40) {
 
             return arr;
@@ -329,18 +333,53 @@ public class BordMakerMain extends AppCompatActivity {
 
                     if (playerOneTurn){
 
+                        tagIndex = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+                        moneyDealings.auctionProperties(false,tagIndex);
+
                         String s = String.valueOf(manualText.getText());
 
-                        bidNumber = new BidNumber(s);
+                        if (Integer.parseInt(s) > bid1) {
 
-                        stringArrayList.add(bidNumber);
+                            bidNumber = new BidNumber(s + "player 1 bid");
+                            stringArrayList.add(bidNumber);
 
-                        BidListAdapter arrayAdapter = new BidListAdapter(BordMakerMain.this,R.layout.newlist, stringArrayList);
+                            BidListAdapter arrayAdapter = new BidListAdapter(BordMakerMain.this,R.layout.newlist, stringArrayList);
 
-                        listView.setAdapter(arrayAdapter);
+                            listView.setAdapter(arrayAdapter);
+                            // problem exist
+                            if (Integer.parseInt(s) <= 60 || Integer.parseInt(s) <= moneyDealings.pulledPrice) {
+
+                                Log.i("bid", "is" + moneyDealings.pulledPrice);
+
+                                bid1 = Integer.parseInt(s) + 20;
+
+                                bidNumber = new BidNumber(bid1 + "player 2 bid");
+                                stringArrayList.add(bidNumber);
+                                listView.setAdapter(arrayAdapter);
+
+                            }else {
+
+                                bidNumber = new BidNumber("player 2 folded");
+
+                                stringArrayList.add(bidNumber);
+                                listView.setAdapter(arrayAdapter);
+
+                                playerOneProperties.add(tagIndex);
+                                moneyDealings.deductMoney(tagIndex,playerOneTurn,Integer.parseInt(s));
+                                int index = indexPairs.get(tagIndex);
+                                gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
+
+                                dialog1.dismiss();
+                            }
+
+                        }
+
+                        else {
+                            Toast.makeText(BordMakerMain.this,"make a higher bid",Toast.LENGTH_LONG).show();
+                        }
 
                     }else {
-                        moneyDealings1.auctionProperties(false);
+
                     }
                 }
             });
@@ -354,8 +393,6 @@ public class BordMakerMain extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
-
-
 
             dialog.show();
 
@@ -372,7 +409,7 @@ public class BordMakerMain extends AppCompatActivity {
         gridLayout = findViewById(R.id.monopolyGridLayout);
 
         int m;
-        String s = "price";
+        String price = "price";
 
         //money = findViewById(R.id.moneyLefts);
         if (playerOneTurn){
@@ -386,7 +423,7 @@ public class BordMakerMain extends AppCompatActivity {
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
             Log.i("Player one", "is" + playerOneProperties);
 
-            moneyDealings.deductMoney(m,playerOneTurn,s);
+            moneyDealings.deductMoney(m,playerOneTurn,price);
 
         }else {
             playerTwoProperties.add(valueToCheck);
@@ -397,7 +434,7 @@ public class BordMakerMain extends AppCompatActivity {
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.moto);
             Log.i("Player Two", "is" + playerTwoProperties);
 
-            moneyDealings1.deductMoney(m,playerOneTurn,s);
+            moneyDealings1.deductMoney(m,playerOneTurn,price);
         }
 
     }
@@ -429,6 +466,5 @@ public class BordMakerMain extends AppCompatActivity {
 
         Log.i("HashMap " ,"is " + indexPairs);
     }
-
 
 }
