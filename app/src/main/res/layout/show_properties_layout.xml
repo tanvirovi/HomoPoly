@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="190dp"
+    android:layout_height="250dp"
+    android:orientation="vertical"
+    android:background="@drawable/brown"
+    android:layout_gravity="center">
+
+
+    <TextView
+        android:id="@+id/propertyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:text="white chapel road"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_marginTop="29dp"
+        android:id="@+id/rentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/houseCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="15sp" />
+
+    <TableLayout
+        android:id="@+id/houseRentTable"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="83dp"
+        android:stretchColumns="0,1">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="⌂"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/oneHouseRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="13sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="⌂⌂"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/twoHouseRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="13sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="⌂⌂⌂"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/threeHouseRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="13sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="⌂⌂⌂⌂"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/fourHouseRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="13sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="🏠"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/hotelRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="13sp" />
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/mortgage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/houseRentTable"
+        android:layout_centerHorizontal="false"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="rent / double"
+        android:textSize="13sp" />
+
+</LinearLayout>

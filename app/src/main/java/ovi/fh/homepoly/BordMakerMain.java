@@ -29,6 +29,7 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -185,7 +186,7 @@ public class BordMakerMain extends AppCompatActivity {
     // changing the background of gridLayout by index
     public void changeBackgroundColor(int stepCounter){
 
-        gridLayout.getChildAt(44).setBackgroundColor(Color.BLACK);
+        gridLayout.getChildAt(40).setBackgroundColor(Color.BLACK);
 
         Log.i("backGroundColorOfChildIndex ", "Setting the backGround Color of " + gridLayout.getChildAt(stepCounter).getId() );
     }
@@ -195,14 +196,17 @@ public class BordMakerMain extends AppCompatActivity {
 
         propertyClicked = (ImageView) view;
 
-        propertyText = findViewById(R.id.propertyText);
-        rentText = findViewById(R.id.rentText);
-        houseCost = findViewById(R.id.houseCost);
-        oneHouseRent = findViewById(R.id.oneHouseRent);
-        twoHouseRent = findViewById(R.id.twoHouseRent);
-        threeHouseRent = findViewById(R.id.threeHouseRent);
-        fourHouseRent = findViewById(R.id.fourHouseRent);
-        hotelRent = findViewById(R.id.hotelRent);
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.show_properties_layout);
+
+        propertyText = dialog.findViewById(R.id.propertyText);
+        rentText = dialog.findViewById(R.id.rentText);
+        houseCost = dialog.findViewById(R.id.houseCost);
+        oneHouseRent = dialog.findViewById(R.id.oneHouseRent);
+        twoHouseRent = dialog.findViewById(R.id.twoHouseRent);
+        threeHouseRent = dialog.findViewById(R.id.threeHouseRent);
+        fourHouseRent = dialog.findViewById(R.id.fourHouseRent);
+        hotelRent = dialog.findViewById(R.id.hotelRent);
 
         clickIndex = Integer.parseInt((String) propertyClicked.getTag());
 
@@ -286,6 +290,7 @@ public class BordMakerMain extends AppCompatActivity {
         });
 
         Log.i("index of gridLayout", "");
+        dialog.show();
 
         //doSomething();
     }
@@ -334,7 +339,6 @@ public class BordMakerMain extends AppCompatActivity {
 
         buyPropertiesDialog.setCanceledOnTouchOutside(false);
         auctionDialogSelection.setCanceledOnTouchOutside(false);
-
 
         if (arr == null || valueToCheck < 0 || valueToCheck >= 40) {
             return arr;
