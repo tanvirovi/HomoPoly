@@ -1,10 +1,12 @@
 package ovi.fh.homepoly;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.FontsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -13,6 +15,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,20 +80,30 @@ public class BordMakerMain extends AppCompatActivity {
 
     // Saves the brought properties of both player
     ArrayList<Integer> playerOneProperties = new ArrayList<>();
+    ArrayList<Integer> playerOneMortgageProperties = new ArrayList<>();
     ArrayList<Integer> playerTwoProperties = new ArrayList<>();
 
+    // creating HashMap for the index pair of Indicators
     HashMap<Integer, Integer> indexPairs = new HashMap<>();
 
+    // creating different objects for each player
     MoneyDealings moneyDealings = new MoneyDealings(this);
     MoneyDealings moneyDealings1 = new MoneyDealings(this);
 
+    // creating objects of bidText
     BidNumber bidNumber;
 
-    int tagIndex;
-    int bid,bid1;
-    Handler h;
+    // tagIndex for gridLayout child index
+    int tagIndex, clickIndex;
+
+    // variable for storing the bid amount
+    int bidAmount;
+
     ArrayList<BidNumber> stringArrayList;
 
+    Boolean mortgageModeIsOn = false;
+    Boolean redeemModeIsOn = false;
+    Animation animation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +111,8 @@ public class BordMakerMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gridLayout = findViewById(R.id.monopolyGridLayout);
+
+        // Map for keeping index and indicators in a match
         populatingHashMap();
     }
 
@@ -124,17 +139,19 @@ public class BordMakerMain extends AppCompatActivity {
 
     // controlling which player turn it is
     public void multiPlayerInIt(){
+        doneIndicator = findViewById(R.id.doneIndicator);
         if(turn == 1){
             diceRollButton.setVisibility(View.INVISIBLE);
+            doneIndicator.setVisibility(View.VISIBLE);
             goPlayerOne = findViewById(R.id.goPlayerOne);
             playerMovement.movePlayer(goPlayerOne,dice,moneyDealings,playerOneTurn);
             propertiesCanBuy = buyProperties(propertiesCanBuy,playerMovement.yStepCounter);
             turn = 0;
         }else{
             diceRollButton.setVisibility(View.VISIBLE);
+            doneIndicator.setVisibility(View.INVISIBLE);
             dice = (random.nextInt(6) + 1) + (random.nextInt(6) + 1);
             goPlayerOne = findViewById(R.id.goPlayerTwo);
-            //movePlayer(goPlayerOne);
             playerMovementTwo.movePlayer(goPlayerOne,dice,moneyDealings1,playerOneTurn);
             propertiesCanBuy = buyProperties(propertiesCanBuy,playerMovementTwo.yStepCounter);
             turn = 1;
@@ -167,8 +184,10 @@ public class BordMakerMain extends AppCompatActivity {
 
     // changing the background of gridLayout by index
     public void changeBackgroundColor(int stepCounter){
+
         gridLayout.getChildAt(44).setBackgroundColor(Color.BLACK);
-        Log.i("index", "ssd" + gridLayout.getChildAt(stepCounter).getId() );
+
+        Log.i("backGroundColorOfChildIndex ", "Setting the backGround Color of " + gridLayout.getChildAt(stepCounter).getId() );
     }
 
     // pulling information from parse
@@ -184,6 +203,61 @@ public class BordMakerMain extends AppCompatActivity {
         threeHouseRent = findViewById(R.id.threeHouseRent);
         fourHouseRent = findViewById(R.id.fourHouseRent);
         hotelRent = findViewById(R.id.hotelRent);
+
+        clickIndex = Integer.parseInt((String) propertyClicked.getTag());
+
+        if (mortgageModeIsOn){
+
+            Log.i("playerOneProperties", " is" + playerOneProperties.size());
+
+            if (playerOneProperties.size() > 0) {
+
+                if (playerOneProperties.contains(clickIndex)) {
+
+                    Toast.makeText(BordMakerMain.this, "i have the properties" + clickIndex, Toast.LENGTH_SHORT).show();
+
+                    playerOneProperties.remove(Integer.valueOf(clickIndex));
+
+                    moneyDealings.addMoney(clickIndex,true,"mortgageValue");
+
+                    playerOneMortgageProperties.add(Integer.valueOf(clickIndex));
+
+                    animation.cancel();
+                    animationCreation(playerOneProperties);
+
+                }
+
+                else {
+                    Toast.makeText(BordMakerMain.this, "click on a blinking properties", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        if (redeemModeIsOn){
+
+            Log.i("playerOneProperties", " is" + playerOneMortgageProperties.size());
+
+            if (playerOneMortgageProperties.size() > 0) {
+
+                if (playerOneMortgageProperties.contains(clickIndex)) {
+
+                    Toast.makeText(BordMakerMain.this, "i have the properties" + clickIndex, Toast.LENGTH_SHORT).show();
+
+                    playerOneMortgageProperties.remove(Integer.valueOf(clickIndex));
+
+                    moneyDealings.deductMoney(clickIndex,true,"mortgageReturn");
+
+                    playerOneProperties.add(Integer.valueOf(clickIndex));
+
+                    animation.cancel();
+                    animationCreation(playerOneMortgageProperties);
+
+                }
+
+                else {
+                    Toast.makeText(BordMakerMain.this, "click on a blinking properties", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
 
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Properties");
         parseQuery.whereEqualTo("diceRoll", Integer.parseInt(propertyClicked.getTag().toString()));
@@ -218,36 +292,57 @@ public class BordMakerMain extends AppCompatActivity {
 
     // animation of listed properties
     public void viewProperties(View view){
+        mortgageModeIsOn = true;
 
-        Animation animation = new AlphaAnimation(1, 0); //to change visibility from visible to invisible
+        RelativeLayout relativeLayout = findViewById(R.id.mortGageLayout);
+        relativeLayout.setVisibility(View.VISIBLE);
+        Button button = findViewById(R.id.closeButton);
+
+        TextView textView = findViewById(R.id.mortgageView);
+        textView.setText("click the blinking properties to mortgage");
+
+        animationCreation(playerOneProperties);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                relativeLayout.setVisibility(View.INVISIBLE);
+                animation.cancel();
+                mortgageModeIsOn = false;
+                redeemModeIsOn = false;
+            }
+        });
+
+    }
+
+    public void animationCreation(ArrayList<Integer> integerArrayList){
+        animation = new AlphaAnimation(1, 0); //to change visibility from visible to invisible
         animation.setDuration(1000); //1 second duration for each animation cycle
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(Animation.INFINITE); //repeating indefinitely
         animation.setRepeatMode(Animation.REVERSE); //animation will start from end point once ended.
-        for (int i : playerOneProperties){
+        for (int i : integerArrayList){
             gridLayout.getChildAt(i).startAnimation(animation);
         }
-
     }
 
     // adding properties to the ArrayList and the total amount update
     public int[] buyProperties(int[] arr, int valueToCheck){
 
-        Dialog dialog = new Dialog(this);
-        Dialog dialog1 = new Dialog(this);
+        Dialog buyPropertiesDialog = new Dialog(this);
+        Dialog auctionDialogSelection = new Dialog(this);
 
-        dialog.setCanceledOnTouchOutside(false);
-        dialog1.setCanceledOnTouchOutside(false);
+        buyPropertiesDialog.setCanceledOnTouchOutside(false);
+        auctionDialogSelection.setCanceledOnTouchOutside(false);
 
 
         if (arr == null || valueToCheck < 0 || valueToCheck >= 40) {
-
             return arr;
         }
 
         arrayList = IntStream.of(arr).boxed().collect(Collectors.toList());
 
-        int m,taxIndex;
+        int gridChildIndex,taxIndex;
 
         if (playerOneTurn){
 
@@ -266,10 +361,10 @@ public class BordMakerMain extends AppCompatActivity {
             if (playerTwoProperties.contains(valueToCheck)){
 
                 Log.i("playerOneTurn", "if is " + playerOneTurn);
-                m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+                gridChildIndex = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
 
-                moneyDealings.deductMoney(m,playerOneTurn,"rent",playerTwoProperties);
-                moneyDealings1.addMoney(m,false,"rent",playerTwoProperties);
+                moneyDealings.deductMoney(gridChildIndex,playerOneTurn,"rent",playerTwoProperties);
+                moneyDealings1.addMoney(gridChildIndex,false,"rent",playerTwoProperties);
             }
         }
 
@@ -290,39 +385,39 @@ public class BordMakerMain extends AppCompatActivity {
             if (playerOneProperties.contains(valueToCheck)){
 
                 Log.i("playerOneTurn", " else is " + playerOneTurn);
-                m = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
+                gridChildIndex = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
 
-                moneyDealings1.deductMoney(m,playerOneTurn,"rent",playerOneProperties);
-                moneyDealings.addMoney(m,true,"rent",playerOneProperties);
+                moneyDealings1.deductMoney(gridChildIndex,playerOneTurn,"rent",playerOneProperties);
+                moneyDealings.addMoney(gridChildIndex,true,"rent",playerOneProperties);
             }
         }
 
         if (arrayList.contains(valueToCheck)){
 
-            dialog.setContentView(R.layout.buy_popup);
+            buyPropertiesDialog.setContentView(R.layout.buy_popup);
 
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            Button buyProperties = dialog.findViewById(R.id.buyProperties);
+            Objects.requireNonNull(buyPropertiesDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Button buyProperties = buyPropertiesDialog.findViewById(R.id.buyProperties);
 
-            dialog1.setContentView(R.layout.auction_popup);
+            auctionDialogSelection.setContentView(R.layout.auction_popup);
 
-            Button auctionProperties = dialog.findViewById(R.id.auctionProperties);
+            Button auctionProperties = buyPropertiesDialog.findViewById(R.id.auctionProperties);
 
             arrayList.remove((Integer) valueToCheck);
 
             auctionProperties.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
+                    buyPropertiesDialog.dismiss();
 
-                    dialog1.show();
+                    auctionDialogSelection.show();
                 }
             });
 
-            Button bidButton = dialog1.findViewById(R.id.bidButton);
-            TextView manualText = dialog1.findViewById(R.id.manualNumber);
+            Button bidButton = auctionDialogSelection.findViewById(R.id.bidButton);
+            TextView manualText = auctionDialogSelection.findViewById(R.id.manualNumber);
 
-            ListView listView =  dialog1.findViewById(R.id.showBidList);
+            ListView listView =  auctionDialogSelection.findViewById(R.id.showBidList);
             stringArrayList = new ArrayList<>();
 
 
@@ -338,7 +433,7 @@ public class BordMakerMain extends AppCompatActivity {
 
                         String s = String.valueOf(manualText.getText());
 
-                        if (Integer.parseInt(s) > bid1) {
+                        if (Integer.parseInt(s) > bidAmount) {
 
                             bidNumber = new BidNumber(s + "player 1 bid");
                             stringArrayList.add(bidNumber);
@@ -351,9 +446,9 @@ public class BordMakerMain extends AppCompatActivity {
 
                                 Log.i("bid", "is" + moneyDealings.pulledPrice);
 
-                                bid1 = Integer.parseInt(s) + 20;
+                                bidAmount = Integer.parseInt(s) + 20;
 
-                                bidNumber = new BidNumber(bid1 + "player 2 bid");
+                                bidNumber = new BidNumber(bidAmount + "player 2 bid");
                                 stringArrayList.add(bidNumber);
                                 listView.setAdapter(arrayAdapter);
 
@@ -369,7 +464,7 @@ public class BordMakerMain extends AppCompatActivity {
                                 int index = indexPairs.get(tagIndex);
                                 gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
 
-                                dialog1.dismiss();
+                                auctionDialogSelection.dismiss();
                             }
 
                         }
@@ -384,17 +479,27 @@ public class BordMakerMain extends AppCompatActivity {
                 }
             });
 
+            Button foldButton = auctionDialogSelection.findViewById(R.id.foldButton);
+
+
+            foldButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    auctionDialogSelection.dismiss();
+                }
+            });
+
             buyProperties.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     buyPropertiesButton(valueToCheck);
 
-                    dialog.dismiss();
+                    buyPropertiesDialog.dismiss();
                 }
             });
 
-            dialog.show();
+            buyPropertiesDialog.show();
 
         }
 
@@ -408,40 +513,40 @@ public class BordMakerMain extends AppCompatActivity {
 
         gridLayout = findViewById(R.id.monopolyGridLayout);
 
-        int m;
+        int broughtPropertiesChildIndex;
         String price = "price";
 
         //money = findViewById(R.id.moneyLefts);
         if (playerOneTurn){
             playerOneProperties.add(valueToCheck);
 
-            m = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
-            Log.i("Player m", "is" + m);
+            broughtPropertiesChildIndex = Integer.parseInt(gridLayout.getChildAt(playerMovement.yStepCounter).getTag().toString());
+            Log.i("Player m", "is" + broughtPropertiesChildIndex);
 
-            int index = indexPairs.get(m);
+            int index = indexPairs.get(broughtPropertiesChildIndex);
 
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.car);
             Log.i("Player one", "is" + playerOneProperties);
 
-            moneyDealings.deductMoney(m,playerOneTurn,price);
+            moneyDealings.deductMoney(broughtPropertiesChildIndex,playerOneTurn,price);
 
         }else {
             playerTwoProperties.add(valueToCheck);
 
-            m = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
-            int index = indexPairs.get(m);
+            broughtPropertiesChildIndex = Integer.parseInt(gridLayout.getChildAt(playerMovementTwo.yStepCounter).getTag().toString());
+            int index = indexPairs.get(broughtPropertiesChildIndex);
 
             gridLayout.getChildAt(index).setBackgroundResource(R.drawable.moto);
             Log.i("Player Two", "is" + playerTwoProperties);
 
-            moneyDealings1.deductMoney(m,playerOneTurn,price);
+            moneyDealings1.deductMoney(broughtPropertiesChildIndex,playerOneTurn,price);
         }
 
     }
 
     // executing the Done button
     public void phaseFinish(View view){
-        doneIndicator =  findViewById(R.id.doneIndicator);
+        //doneIndicator =  findViewById(R.id.doneIndicator);
         playerOneTurn = false;
 
         multiPlayerInIt();
@@ -449,6 +554,7 @@ public class BordMakerMain extends AppCompatActivity {
 
     // putting information into HashMap for the property indicator
     public void populatingHashMap(){
+        // key = ChildIndexValueOf GridLayout, value = ChildIndexValueOf GridLayout indicator
         indexPairs.put(1,44);
         indexPairs.put(3,45);
         indexPairs.put(5,46);
@@ -467,4 +573,14 @@ public class BordMakerMain extends AppCompatActivity {
         Log.i("HashMap " ,"is " + indexPairs);
     }
 
+    public void redeemProperties(View view) {
+        redeemModeIsOn = true;
+        RelativeLayout relativeLayout = findViewById(R.id.mortGageLayout);
+        relativeLayout.setVisibility(View.VISIBLE);
+        TextView textView = findViewById(R.id.mortgageView);
+        textView.setText("click the blinking properties to unmortgage");
+
+        animationCreation(playerOneMortgageProperties);
+
+    }
 }

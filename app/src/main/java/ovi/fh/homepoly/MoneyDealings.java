@@ -170,7 +170,7 @@ public class MoneyDealings extends Activity {
         });
     }
 
-    /*public void addMoney(int tag, boolean playerTurn,String s){
+    public void addMoney(int tag, boolean playerTurn,String s){
 
         if (playerTurn){
             money = activity.findViewById(R.id.moneyLefts);
@@ -202,7 +202,7 @@ public class MoneyDealings extends Activity {
                 Log.i("Total", "add " + totalAmount);
             }
         });
-    }*/
+    }
 
     public void simpleAddMoney(int add, boolean b){
         if (b){

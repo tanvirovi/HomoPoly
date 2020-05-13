@@ -11,16 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BidListAdapter extends ArrayAdapter<BidNumber> {
 
-    private Context mcontext;
+    private Context mContext;
     int reAnInt;
 
     public BidListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<BidNumber> objects) {
         super(context, resource, objects);
-        mcontext = context;
+        mContext = context;
         reAnInt = resource;
     }
 
@@ -30,7 +29,7 @@ public class BidListAdapter extends ArrayAdapter<BidNumber> {
 
         String s = getItem(position).getS();
         BidNumber bidNumber  = new BidNumber(s);
-        LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(reAnInt, parent, false);
 
         TextView textView = convertView.findViewById(R.id.auctionText);
