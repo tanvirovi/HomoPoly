@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 
@@ -12,18 +13,22 @@ public class StarterApplication  extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //Parse.initialize(this);
         Parse.enableLocalDatastore(this);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("351484a55a42d286a5a364874c339b51f8e779ef")
+                .applicationId(getString(R.string.back4app_app_id))
                 // if defined
-                .clientKey("6201f5e4809b24c03d3961487d300deb9b81edf0")
-                .server("http://3.21.232.234:80/parse")
+                .clientKey(getString(R.string.back4app_client_key))
+                .server(getString(R.string.back4app_server_url))
                 .build()
         );
 
-        //ParseUser.enableAutomaticUser();
+
+
+/*        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseUser.enableAutomaticUser();*/
 
         ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);

@@ -6,6 +6,7 @@ This project is all about creating a boardgames that is similar to a monopoly ga
 - player movement using animation
 - effective game logic 
 - enabling trading and bidding functions
+- online functionalists
 
 More to be added
 - bluetooth function

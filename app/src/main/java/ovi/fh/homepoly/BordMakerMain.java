@@ -271,7 +271,7 @@ public class BordMakerMain extends AppCompatActivity {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null){
                     if (objects.size() > 0){
-
+                        Log.i("hotel", " is " + objects.size());
                         for (ParseObject object : objects){
                             propertyText.setText(object.getString("propertiesNames"));
                             rentText.setText("RENT " + object.getInt("rent") + "$");
@@ -280,7 +280,8 @@ public class BordMakerMain extends AppCompatActivity {
                             twoHouseRent.setText( object.getInt("houseTwoRent") + "$");
                             threeHouseRent.setText( object.getInt("houseThreeRent") + "$");
                             fourHouseRent.setText( object.getInt("houseFourRent") + "$");
-                            hotelRent.setText( object.getInt("hotelCost") + "$");
+                            hotelRent.setText( object.getInt("hotelRent") + "$");
+                            Log.i("hotel", " is " + object.getInt("hotelCost"));
                         }
                     }
                 }else {
@@ -289,7 +290,7 @@ public class BordMakerMain extends AppCompatActivity {
             }
         });
 
-        Log.i("index of gridLayout", "");
+
         dialog.show();
 
         //doSomething();
